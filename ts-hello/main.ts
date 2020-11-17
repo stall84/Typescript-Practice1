@@ -62,8 +62,8 @@ interface Point {
     y: number
 }
 
-let drawPoint = (point: Point) => {
-    console.log(point);
+let drawPoint = (point: Point) => {     // This is essentially the same thing as C-languages'
+    console.log(point);                 // public static void drawPoint (Object<Point> point) { /... }
 }
 
 drawPoint({
@@ -93,7 +93,7 @@ class Point2 {
     }  
 }
 
-let pointB = new Point2(3, 5);
+let pointB = new Point2(3, 5);      // Same structurally as:   Point2 pointB = new Point2();
 
 // pointB.x = 3;   // Unecessary after constructor added
 // pointB.y = 8;
@@ -107,3 +107,70 @@ pointB.draw();
 // ACCESS MODIFIERS //
 // By default all members are public 
 // If you want to prevent a field or method from being reassigned later. Add private keyword
+// Example of a new class using private field modifiers AND simplified/stremalined constructor syntax
+// that will create the necessary fields and initialize their values, all out of the constructor 
+
+class StreamPoint {
+    constructor(private x?: number, private y?: number) {
+        // The above constructor does two things that the first class example we wrote above does verbosely
+        // It automatically creates the private fields ex: private x; private y; . Opens the constructor,
+        // Then it automatically assigns this.x = x; and this.y = y;
+        // This is a much perferred and simpler way of writing classes
+    }
+
+    draw() {
+        console.log("You've used the most modern class syntax to set points" + " X: " + this.x + ", and " + "Y: " + this.y ); 
+    }
+}
+
+let streamPoint = new StreamPoint(4, 2);
+
+streamPoint.draw();
+
+// PROPERTIES //
+
+// Getters and Setters essentially. There are times when we want to allow display or setting of 'fields'.. 
+// So we'll use getter-setter methods
+
+class PointProp {
+
+    // similar to c# property variables are prefixed with underscore
+
+    constructor(private _x?: number, private _y?: number) {
+
+    }
+
+    draw() {
+        console.log('Drawing Point of ' + 'X: ' + this._x + ', Y: ' + this._y);
+    }
+
+    get x() {
+        return this._x;
+    }
+
+    get y() {
+        return this._y;
+    }
+
+    // These getter and setter properties allow STRUCTURED/CONTROLLED Access to private fields/methods
+    // NOTE: Properties are quasi-methods that you can use as fields
+    // These will allow you to later access these propreties the same way you could an unprotected field.. 
+    // using dot notation e.g. point.X 
+
+    set x(value) {
+        if (value < 0) {
+            throw new Error('Value cannot be less than 0.');
+        }
+        this._x = value;
+    }
+
+    set y(value) {
+        if (value < 0) {
+            throw new Error('Value cannot be less than 0.');
+        }
+        this._y = value;
+    }
+}
+
+let pointProp = new PointProp(5,8);
+
